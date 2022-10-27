@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "../App.css";
+import { UserContext } from "../context/UserContext";
 
 
 const initialValues = () => {
@@ -13,7 +14,13 @@ const initialValues = () => {
 
 export const ContentsSearch = () => {
   const [data, setData] = useState("");
-  const [Name, setName] = useState("")
+  const [valueData, setValueData] = useState(null)
+
+  console.log(valueData);
+
+   
+
+  const {setUser} =useContext(UserContext);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -30,19 +37,26 @@ export const ContentsSearch = () => {
   const dataJson = () => {
     const JSONnamePersona = [
       {
-        12345678912: { 
-          name: "cesar",
-          surname: "moreno" },
+        "12345678912": { 
+          name: "Cesar",
+          surname: "Moreno" },
       },
       {
-        98765432101: { 
+        "98765432101": { 
           name: "Axel",
           surName: "Moreno S" },
       },
     ];
-    JSONnamePersona.find((value) => console.log(value[data]));
+    JSONnamePersona.find((value) =>console.log(value[data]));
+    
   };
 
+  useEffect(() => {
+    dataJson()
+    
+  }, [data])
+  
+ 
   return (
     <form className="content" onSubmit={formik.handleSubmit}>
       <div className="containerPrima m-3">
@@ -76,7 +90,7 @@ export const ContentsSearch = () => {
             <button
               type="submit"
               disabled={false}
-              onClick={dataJson()}
+              onClick={dataJson}
               className="btn btn-primary mt-2"
             >
               Buscar
