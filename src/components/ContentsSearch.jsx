@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "../App.css";
 import { UserContext } from "../context/UserContext";
-
 
 const initialValues = () => {
   return {
@@ -13,14 +13,10 @@ const initialValues = () => {
 };
 
 export const ContentsSearch = () => {
-  const [data, setData] = useState("");
-  const [valueData, setValueData] = useState(null)
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(true);
 
-  console.log(valueData);
-
-   
-
-  const {setUser} =useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -29,34 +25,44 @@ export const ContentsSearch = () => {
       documento: Yup.string().required("seleccione un documento"),
     }),
     onSubmit: (formData) => {
+      if (!formData.numDocument || !formData.documento) return;
+      setError(false);
       setData(formData.numDocument);
     },
   });
 
- 
-  const dataJson = () => {
-    const JSONnamePersona = [
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    if (e.currentTarget.value.length < 6) {
+      setError(true);
+      return;
+    }
+    formik.handleChange(e);
+    setError(false);
+  };
+  const dataJson = useCallback(() => {
+    const PERSONS = [
       {
-        "12345678912": { 
+        12345678912: {
           name: "Cesar",
-          surname: "Moreno" },
+          surname: "Moreno",
+        },
       },
       {
-        "98765432101": { 
+        98765432101: {
           name: "Axel",
-          surName: "Moreno S" },
+          surname: "Moreno S",
+        },
       },
     ];
-    JSONnamePersona.find((value) =>console.log(value[data]));
-    
-  };
+    return PERSONS.find((value) => value[data]);
+  }, [data]);
 
   useEffect(() => {
-    dataJson()
-    
-  }, [data])
-  
- 
+    const findedValue = dataJson();
+    setUser(findedValue);
+  }, [data, dataJson]);
+
   return (
     <form className="content" onSubmit={formik.handleSubmit}>
       <div className="containerPrima m-3">
@@ -84,22 +90,24 @@ export const ContentsSearch = () => {
               aria-label="Username"
               aria-describedby="basic-addon1"
               name="numDocument"
-              onChange={formik.handleChange}
+              onChange={handleOnChange}
             />
             <span className="text-danger">{formik.errors.numDocument}</span>
-            <button
-              type="submit"
-              disabled={false}
-              onClick={dataJson}
-              className="btn btn-primary mt-2"
-            >
-              Buscar
-            </button>
+            <div className="d-flex justify-content-center">
+              <button
+                type="submit"
+                disabled={error}
+                onClick={dataJson}
+                className="btn btn-primary mt-2 col col-md-2 col-lg-1"
+              >
+                <Link to={"/info"} className="text-white">
+                  Buscar
+                </Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </form>
   );
 };
-
-

@@ -13,8 +13,8 @@ export const Navbar = () => {
             Buscar
           </NavLink>
 
-          <NavLink className={({isActive})=>`nav-item nav-link ${isActive?"active":""}`} to="/info">
-            Informacion
+          <NavLink className={({isActive})=>`nav-item nav-link ${isActive?"active":""}`} to="/">
+            Información
           </NavLink>
         </div>
         <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
