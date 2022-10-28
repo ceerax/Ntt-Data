@@ -1,15 +1,16 @@
+Inicializamos proyecto 
 
 ### `npm install`
 ### `npm start`
 
-Inicializamos proyecto 
 
  [http://localhost:3000](http://localhost:3000) 
 
-### `12345678912`
+Número de documento "PRUEBA"
+
 Nombre:Cesar Apellido: Moreno
-### `98765432101`
+### `12345678912`
 Nombre :Axel Apellido :Moreno S
+### `98765432101`
 
 
-numero de documento "PRUEBA"
